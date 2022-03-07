@@ -6,6 +6,8 @@ require 'csv'
 class MatcherCsv
   # reads a csv file and store the rows in memory
   def self.read(csv_file_path)
+    raise StandardError, 'File does not exist' unless File.exist?(csv_file_path)
+
     csv_records = []
     CSV.foreach(csv_file_path, headers: true) do |row|
       csv_records << row.to_h
@@ -16,6 +18,8 @@ class MatcherCsv
 
   # creates a csv file based on the file path and content
   def self.write(output_csv_path, csv_content)
+    raise StandardError, 'Output CSV content is empty' if csv_content.empty?
+
     csv_headers = csv_content.first.keys
     grouped_csv = [csv_headers] + csv_content.map(&:values)
 
